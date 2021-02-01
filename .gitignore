@@ -127,3 +127,9 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+pgdb/
+redisdb/
+.idea
+media/*
+*.pyc
+.DS_Store

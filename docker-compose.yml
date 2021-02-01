@@ -1,0 +1,73 @@
+version: '3.7'
+
+services:
+
+  postgres:
+    container_name:  postgres-db
+    image:           postgres:9.6.6
+    restart: "always"
+    ports:
+      - 5432:5432 # Bind host port 5432 to PostgreSQL port 5432
+    volumes:
+      - ./pgdb:/var/lib/postgresql/data
+    env_file: .env
+    environment:
+      - LC_ALL=C.UTF-8
+
+
+  redis:
+    image: redis:5
+    restart: "always"
+    container_name: redis
+    command: redis-server --requirepass $REDIS_PASSWORD
+    ports:
+      - 6379:6379
+    volumes:
+      - ./redisdb:/var/lib/redis
+    env_file: .env
+
+
+  celery:
+    restart: "always"
+    build:
+      context: .
+      dockerfile: celery.dockerfile
+    container_name: celery
+    env_file: .env
+    environment:
+      - LANG=C.UTF-8
+      - LANG=en_US.UTF-8
+      - LANGUAGE=en_US:en
+      - LC_ALL=en_US.UTF-8
+    command: /venv/bin/celery --app=mysite.celery:app worker -B --loglevel=ERROR
+    volumes:
+      - .:/code
+    links:
+      - redis
+      - postgres
+    depends_on:
+      - "redis"
+      - "postgres"
+
+  web:
+    container_name: code_test
+    build: .
+    restart: "always"
+    env_file: .env
+    environment:
+      - VIRTUAL_PORT=8050
+      - TIMEOUT=300
+      - HTTP_PORT=8050
+      - STATS_PORT=8051
+      - LANG=C.UTF-8
+      - LANG=en_US.UTF-8
+      - LANGUAGE=en_US:en
+      - LC_ALL=en_US.UTF-8
+    volumes:
+      - .:/code
+    ports:
+      - "8050:8050"
+    links:
+      - postgres
+    depends_on:
+      - "postgres"

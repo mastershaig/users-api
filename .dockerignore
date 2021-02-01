@@ -1,0 +1,10 @@
+.idea/
+.venv/
+_frontend/
+media/
+pgdb/
+redisdb/
+contributors.txt
+*.pyc
+.git/
+
