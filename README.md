@@ -7,7 +7,7 @@ Conditions:
 - Make use of docker and docker-compose
 - Make use of unit tests
 
-###1. User Birthday Service
+######1. User Birthday Service
 a. Create an API endpoint which accepts a list of JSON objects as POST-payload.
 - Store the data in a Postgres Database
 - The email address should be unique
@@ -23,7 +23,7 @@ b. Create an API endpoint which returns a list of objects, filtered by the follo
 
 c. Create an API endpoint which returns the average age of all records in the database. Think about caching.
 
-###2. Letter Digit
+######2. Letter Digit
 Create an API-Endpoint taking a string with letters and digits and returning a list of all possible upper & lowercase variations.
 Example: (a2B => [a2b, a2B, A2b, A2B])
 
